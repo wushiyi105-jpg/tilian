@@ -51,6 +51,13 @@ python -m tilian web --port 8769
 # http://127.0.0.1:8769
 ```
 
+Run in Docker (the container uses the default port 8000):
+
+```bash
+docker build -t tilian .
+docker run -p 8000:8000 tilian
+```
+
 ## Command reference
 
 | Command | What it does |
@@ -67,6 +74,46 @@ python -m tilian web --port 8769
 | `rm <qid>` / `stats` / `web` | Delete / stats / web |
 
 Global switches `--mock`, `--json`, `--model`, `--base-url`, `--api-key`, `--db`.
+
+## 🤔 Why not just ask a general LLM
+
+A general model can write questions from your material. Tilian adds the three things it cannot:
+
+1. **The model does not grade** — whether your answer is right is judged locally against keyword coverage and key points; the model writes questions and explains mistakes but never grades its own work.
+2. **Scheduling is local** — Ebbinghaus intervals (1, 2, 4, 7, 15, 30 days) are computed from right and wrong answers, with a miss returning to the first interval, and dates advance month by month via `calendar.monthrange`.
+3. **The error book stays local** — wrong answers, review dates and accuracy live in local SQLite, with no study plan handed to a cloud service.
+4. **Practice works offline** — with no key, rule-based cloze questions (requiring a unique, long-enough keyword), template explanations, local grading and scheduling all still run.
+
+## 🎯 Use cases
+
+- **Self-testing on study material**: paste a textbook passage, get five cloze questions, grade immediately, and the missed item enters the error book.
+- **Certificate exam drilling**: for memory-heavy exams such as teaching or fund qualifications, reviews fall on 1/2/4/7-day intervals without a hand-made schedule.
+- **Checking a class before teaching**: turn this lesson's key points into a question set, run it in class and see which item nobody got.
+
+## 🗺 Roadmap
+
+- **More question types**: multiple choice, true/false and short answer each with grading rules, not only cloze.
+- **Review-card export**: CSV that imports into Anki-like tools.
+- **Mastery by topic**: accuracy per topic, showing which block is persistently shaky.
+- **Error variants**: generate a variant of the same item to check real understanding rather than memorised answers.
+- **Review reminders**: tell you which items are due today.
+
+## ❓ FAQ
+
+**Where do I get an API key?**
+Question generation and explanations need a model — DeepSeek or Zhipu via `LLM_API_KEY` in `.env`; grading and scheduling do not.
+
+**Where is data stored, and is it uploaded?**
+Questions, answers and the error book are in local SQLite; a model call sends the current material and question.
+
+**Does it work without a key?**
+Cloze generation, grading and scheduling are all local; explanations are templates, less detailed than a model's.
+
+**How do I switch models?**
+Change `LLM_BASE_URL`, `LLM_MODEL` and `LLM_API_KEY` as in `.env.example`.
+
+**Why is grading not up to the model?**
+Because it has to be reviewable. Below the keyword-coverage threshold counts as wrong, and the missing key points are listed so you can loosen the rule knowingly.
 
 ## How it works
 
