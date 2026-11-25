@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tilian"
+version = "0.1.0"
+description = "按知识点出题、批改讲解、艾宾浩斯复习"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+
+[project.scripts]
+tilian = "tilian.cli:main"
+
+[tool.setuptools]
+packages = ["tilian"]
+
+[tool.ruff]
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
