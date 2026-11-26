@@ -159,6 +159,6 @@ tilian/
 
 ## Author
 
-shiyi · GitHub [@wushiyi105-jpg](https://github.com/wushiyi105-jpg) · wushiyi105@gmail.com
+Dazhao · 17382987315
 
 MIT License, Copyright (c) 2026 wushiyi105-jpg
