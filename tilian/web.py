@@ -12,7 +12,7 @@ from .db import Database
 
 PAGE = """<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>题练 · 刷题备考</title>
+<title>题练 · 今天复习几题</title>
 <style>
 :root{--bg:#f4f8f4;--card:#fff;--ink:#1e2620;--dim:#6b7a70;--accent:#2f7d52;--line:#dfe8e1}
 *{box-sizing:border-box}
@@ -33,11 +33,66 @@ button:disabled{opacity:.55;cursor:wait}
 .q{border-bottom:1px dashed var(--line);padding:10px 0}
 .q b{display:block}
 .row{display:flex;gap:8px;margin-top:8px}.row input{flex:1}
+
+h1{font-size:clamp(31px,5vw,39px);line-height:1.26}
+.prod{display:block;font-size:11px;line-height:1.4;letter-spacing:.18em;font-weight:650;margin-bottom:8px;opacity:.72}
+.lede,.sub{max-width:62ch;line-height:1.75}
+.route{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;margin:0 0 20px;border:1px solid var(--line);background:var(--line)}
+.route span{padding:11px 13px;background:var(--card);font-size:12px;line-height:1.5}
+.route b{display:block;font-size:10px;letter-spacing:.1em;margin-bottom:3px;opacity:.66}
+button{min-height:46px}
+input,select{min-height:44px}
+@media(max-width:680px){
+  .wrap{padding:20px 16px 56px}
+  .route{grid-template-columns:1fr}
+  h1{font-size:30px!important}
+  .row>div{min-width:100%!important}
+  button{width:100%}
+}
+
+body{background:#f8f4e8;color:#26324a;font-family:"PingFang SC","Microsoft YaHei",sans-serif;background-image:repeating-linear-gradient(0deg,transparent 0 31px,#eee7d6 31px 32px)}
+.wrap{max-width:860px}
+header{padding:8px 0 20px;margin-bottom:20px;border-bottom:1px solid #cfc6b2}
+header h1{font-family:"Songti SC","SimSun",Georgia,serif;font-size:38px;line-height:1.24}
+header p{color:#6a6659;font-size:14px}
+.card{background:#fffdf6;border:1px solid #dbd2bd;border-left:5px solid #2c4fa3;border-radius:0;box-shadow:none}
+button{background:#2c4fa3;border-radius:0;letter-spacing:.05em}
+button:hover{background:#24418a}
+textarea,input,select{background:#fffef9;border-color:#d8ceb8;border-radius:0}
+textarea:focus,input:focus,select:focus{border-color:#2c4fa3;box-shadow:0 0 0 2px #d9e1f2}
+.item{border-left:3px solid #2c4fa3}
+h3{color:#2c4fa3;letter-spacing:.08em}
+
+
+/* palette-normalized */
+:root{--bg:#f8f4e8;--card:#fffdf6;--ink:#26324a;--text:#26324a;--dim:#6a6659;--line:#dbd2bd;--accent:#2c4fa3}
+
+/* polish-batch1 */
+button.ghost,button.secondary{background:transparent!important;color:#2c4fa3!important;border:1px solid #dbd2bd!important}
+
+/* mobile-32 */
+
+@media(max-width:760px){
+  main{grid-template-columns:1fr!important}
+  aside{border-right:0!important;border-bottom:1px solid #dbd2bd;width:auto!important}
+  section{padding:16px!important}
+  .row{flex-wrap:wrap!important}
+  .row>div{min-width:100%!important}
+  h1{font-size:30px!important}
+  .route{grid-template-columns:1fr!important}
+  button{min-height:48px}
+  pre{overflow-x:auto}
+}
+
+/* mobile-height */
+@media(max-width:760px){main{min-height:auto!important}aside{min-height:0!important}}
 </style></head><body><div class="wrap">
-<h1>题练 <span id="st" class="badge"></span></h1>
-<p class="sub">出题用模型,判分在本地。复习间隔按艾宾浩斯走,答错回到第一档。</p>
+<h1><span class="prod">题练</span>今天，复习几题 <span id="st" class="badge"></span></h1>
+<p class="sub">给用自己的材料备考的人：题目附来源段落，答完给错因，讲义支持的等价答案可以接受，答对但犹豫的单独回排。</p>
 <div class="tabs"><div class="tab on" data-t="gen">出题</div><div class="tab" data-t="quiz">作答</div><div class="tab" data-t="due">待复习</div></div>
 
+
+  <div class="route" aria-label="任务步骤"><span><b>01</b>选讲义和题量</span><span><b>02</b>作答不先看答案</span><span><b>03</b>按错因回排</span></div>
 <div class="card" id="p-gen">
   <label>知识点</label><select id="gTopic"></select>
   <label>出几道</label><input id="gN" type="number" value="5" min="1" max="10">
